@@ -61,3 +61,41 @@ segment .data
     again db "Do you hvae another data set to process (Y or N)? ", 0
     directions db "For the array enter a sequence of 64-bit floats seperated by white space.", 0
     directions2 db "After the last input press enter followed by Control+D:", 0
+
+segment .text
+
+manager: ;this is a loop btw
+    push rbp
+    mov rbp, rsp
+
+    ;print directions
+    lea rdi, [directions]
+    xor rax, rax
+    call printf
+    lea rdi, [directions2]
+    xor rax, rax
+    call printf
+
+    ;call input_array 
+    call input_array
+
+    ;call isfloat to validate input
+    call isfloat
+
+    ;call maximum to find the maximum value in the array
+    call maximum
+
+    ;call reverse to reverse the order of the elements in the array
+    call reverse
+
+    ;ask user if they want to process another data set
+    lea rdi, [again]
+    xor rax, rax
+    call printf
+    call getchar
+    cmp al, 'Y'
+    je manager ;repeat if user wants to do it again
+
+    pop rbp
+    ret
+    
