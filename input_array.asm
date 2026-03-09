@@ -70,12 +70,15 @@ read_loop:
     cmp rbx, 100
     je input_done
 
+    sub rsp, 8 ;idk stackoverflow said to do this
+
     ;prompts user 
     lea rdi, [format_input] 
     lea rsi, [array + rbx*8] 
     xor rax, rax            
-    
     call scanf ;returns items read
+
+    add rsp, 8
     cmp rax, 1
     je valid_input ;if valid continue
 

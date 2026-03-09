@@ -42,7 +42,7 @@
 ;  Link: gcc -no-pie -o circles main.cpp circle.o isfloat.o
 
 ;begin code
-
+extern array
 extern isfloat
 global reverse
 

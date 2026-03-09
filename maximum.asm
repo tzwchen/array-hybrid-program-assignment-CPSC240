@@ -44,7 +44,7 @@
 
 ;Begin code
 
-
+extern array
 extern isfloat;
 
 global maximum;
@@ -54,7 +54,6 @@ segment .bss
     max resq 1 ; reserve space for the maximum value
     i resq 1 ; reserve space for the loop index
     size resq 1 ; reserve space for the size of the array
-    array resq 100 ; reserve space for the array of 100 double-precision floating
 
 segment .text
 
