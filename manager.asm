@@ -44,12 +44,14 @@
 
 ;Begin code
 
-extern output_array
+extern printf
+extern getchar
 extern input_array
-extern isfloat
 extern maximum
 extern reverse
+extern output_array
 global manager
+global array
 
 ;declarations
 segment .bss

@@ -43,11 +43,12 @@
 
 
 ;Begin code
-
+extern array
 extern scanf
 extern getchar 
 extern printf
 global input_array
+
 
 ;declarations
 section .data
