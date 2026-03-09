@@ -44,7 +44,29 @@
 
 ;Begin code
 
-extern isfloat;
-global input_array;
+extern isfloat
+global input_array
 
+;declaratoins
+section .data
+    format_input db "%lf", 0 ;format string that inputs double precision fpns
+    size dq 0 ; variable to store the size of the array
+
+section .bss
+    array resq 100 ; reserve space for the array of 100 dp fpns
+
+section .text
+
+input_array:
+    push rbp
+    mov rbp, rsp 
+    push rbx 
+
+    xor rbx, rbx ; initialize loop index to 0
+    read_loop:
+    lea rdi, [format_input] 
+    lea rsi, [array + rbx*8] ; calculate the address of the current array element
+    xor rax, rax ; clear rax for scanf
+    call scanf 
+    
 
