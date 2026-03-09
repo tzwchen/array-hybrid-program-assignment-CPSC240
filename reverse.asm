@@ -56,25 +56,25 @@ reverse:
     push rbp
     mov rbp, rsp
 
-    ;get size of array from caller
-    mov rax, rdi
-    mov [size], rax
+    ;rdi = array address, rsi = size
+    mov r8, 0 ;Left index
+    mov r9, rsi
+    dec r9 ;Right index (size - 1)
 
-    xor rbx, rbx 
-    ;reverse loop
 reverse_loop:
-    cmp rbx, [size] ;check if end of array
-    jge reverse_done
+    cmp r8, r9
+    jge reverse_done ;Stop when pointers meet or cross
 
-    ;swap 
-    mov rax, [array + rbx*8] ;get current element
-    mov rdx, [array + ([size] - 1 - rbx)*8
-    mov [array + rbx*8], rdx ;move element from end to current position in index
-    mov [array + ([size] - 1 - rbx)*8], rax ;move current element to end position in index
-    inc rbx
+    ;Swap elements at [rdi + r8*8] and [rdi + r9*8]
+    movsd xmm0, [rdi + r8*8]
+    movsd xmm1, [rdi + r9*8]
+    movsd [rdi + r8*8], xmm1
+    movsd [rdi + r9*8], xmm0
+
+    inc r8
+    dec r9
     jmp reverse_loop
-    
+
 reverse_done:
     pop rbp
     ret
-
