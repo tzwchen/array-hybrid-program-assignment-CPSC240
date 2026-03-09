@@ -77,12 +77,10 @@ manager: ;this is a loop btw
     xor rax, rax
     call printf
 
+    ;call input array 
     lea rdi, [array] ;pass array address
     call input_array
     mov r12, rax ;save the number of elements returned
-
-    ;call input_array 
-    call input_array
 
     ;call maximum to find the maximum value in the array
     lea rdi, [array]

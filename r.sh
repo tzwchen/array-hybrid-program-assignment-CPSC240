@@ -33,4 +33,7 @@ echo "Run the Program"
 chmod +x arrays.out
 ./arrays.out
 
+# delete the object files after running the program
+rm -f *.o
+
 echo "The script has terminated."

@@ -48,11 +48,17 @@
 
 #include <iostream>
 #include <iomanip>
-#include <vector>
+extern "C" void output_array(double* arr, long size);
 
-void output_array(const std::vector<double>& arr) {
-    for (const auto& num : arr) {
-        std::cout << std::fixed << std::setprecision(8) << num << std::endl;
+void output_array(double* arr, long size) {
+    if (size <= 0) {
+        return;
+    }
+
+    std::cout << std::fixed << std::setprecision(8);
+
+    for (long i = 0; i < size; ++i) {
+        std::cout << arr[i] << std::endl;
     }
 }
 
