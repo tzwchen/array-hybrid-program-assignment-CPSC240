@@ -46,6 +46,7 @@
 
 extern scanf
 extern getchar 
+extern printf
 global input_array
 
 ;declarations
@@ -75,7 +76,7 @@ read_loop:
     
     call scanf ;returns items read
     cmp rax, 1
-    jne valid_input ;if valid continue
+    je valid_input ;if valid continue
 
     ;if invalid
     cmp rax, -1 ;if scanf returns -1, that means theyre done
