@@ -1,4 +1,4 @@
-/
+
 //Program name: "Circles". The purpose of this program is to calculate the area of a circle based on user input radius.
 //Copyright (C) 2026 Tristan chen *
 // *
@@ -45,13 +45,15 @@
 //  Compile this file: g++ -c -m64 -Wall -o main.o main.cpp -fno-pie -no-pie -std=c++17
 //     [As the time of upgrade to this program C++ standard 2020 was not available.]
 //  Link this program: g++ -m64 -o circles.out main.o circle.o isfloat.o -fno-pie -no-pie -std=c++17
-
+#include <cstddef>
 #include <iostream>
 #include <iomanip>
+
+
 extern "C" void output_array(double* arr, long size);
 
 void output_array(double* arr, long size) {
-    if (size <= 0) {
+    if (size <= 0 || arr == nullptr) {
         return;
     }
 
