@@ -44,29 +44,52 @@
 
 ;Begin code
 
-extern isfloat
+extern scanf
 global input_array
 
-;declaratoins
+;declarations
 section .data
-    format_input db "%lf", 0 ;format string that inputs double precision fpns
-    size dq 0 ; variable to store the size of the array
+    format_input db "%lf", 0 
 
 section .bss
-    array resq 100 ; reserve space for the array of 100 dp fpns
+    array resq 100 
 
 section .text
 
 input_array:
     push rbp
     mov rbp, rsp 
-    push rbx 
+    push rbx                
 
-    xor rbx, rbx ; initialize loop index to 0
-    read_loop:
+    xor rbx, rbx  ;sets counter to 0
+
+read_loop:
+    ;is array at 100 elements yet?
+    cmp rbx, 100
+    je input_done
+
+    ;prompts user 
     lea rdi, [format_input] 
-    lea rsi, [array + rbx*8] ; calculate the address of the current array element
-    xor rax, rax ; clear rax for scanf
-    call scanf 
+    lea rsi, [array + rbx*8] 
+    xor rax, rax            
     
+    call scanf ;returns items read
+
+    ;when user no longer wants to input values, LOGIC: scanf will return 1 if valid input, but will return 0 if user hits Ctrl+D.
+    cmp rax, 1
+    jne input_done
+
+    ;repeat loop til done
+    inc rbx
+    jmp read_loop 
+
+input_done:
+    ;Return the size of the array to the caller
+    mov rax, rbx
+
+    pop rbx
+    pop rbp
+    ret
+
+
 
