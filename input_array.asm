@@ -61,7 +61,8 @@ section .text
 input_array:
     push rbp
     mov rbp, rsp 
-    push rbx                
+    push rbx     
+    push r12           
 
     xor rbx, rbx  ;sets counter to 0
 
@@ -70,7 +71,6 @@ read_loop:
     cmp rbx, 100
     je input_done
 
-    sub rsp, 8 ;idk stackoverflow said to do this
 
     ;prompts user 
     lea rdi, [format_input] 
@@ -78,26 +78,25 @@ read_loop:
     xor rax, rax            
     call scanf ;returns items read
 
-    add rsp, 8
-    cmp rax, 1
-    je valid_input ;if valid continue
+    ;ok i know i used eax here, but this is why: scanf returns an int (32 bit), so it fills eax with 0xffff... but its zero extended into rax, which makes it equal to big number instead of -1 so i have to use eax
+    cmp eax, -1
+    je input_done 
 
-    ;if invalid
-    cmp rax, -1 ;if scanf returns -1, that means theyre done
-    je input_done
+    cmp eax, 1
+    je valid_input
 
-    ;if actually invalid
     lea rdi, [error]
     xor rax, rax
-    call printf ;prompts user to re-enter
+    call printf
+    
 
 clear_buffer: ;need to do this to prevent infinite loops...refer back to circles assignment
     call getchar
-    cmp rax, 10 ;check if newline
-    je read_loop ;if newline, go back to reading input
-    cmp rax, -1 ;check if hit end 
-    je input_done ;if end, exit
-    jmp clear_buffer ;otherwise, keep clearing buffer until everything gone
+    cmp rax, -1
+    je input_done
+    cmp rax , 10 ;check if newline
+    je read_loop ;if end, exit
+    jmp clear_buffer
 
 valid_input:
     ;repeat loop til done
@@ -107,7 +106,7 @@ valid_input:
 input_done:
     ;Return the size of the array to the caller
     mov rax, rbx
-
+    pop r12
     pop rbx
     pop rbp
     ret

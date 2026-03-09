@@ -107,6 +107,7 @@ manager: ;this is a loop btw
     xor rax, rax
     call printf
     call getchar
+    call getchar
     cmp al, 'Y'
     je manager ;repeat if user wants to do it again
 
