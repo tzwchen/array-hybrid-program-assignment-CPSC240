@@ -53,8 +53,6 @@ section .data
     format_input db "%lf", 0 
     error db "Please re-enter the last number.", 0
 
-section .bss
-    array resq 100 
 
 section .text
 

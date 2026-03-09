@@ -77,22 +77,29 @@ manager: ;this is a loop btw
     xor rax, rax
     call printf
 
+    lea rdi, [array] ;pass array address
+    call input_array
+    mov r12, rax ;save the number of elements returned
+
     ;call input_array 
     call input_array
 
-    ;call isfloat to validate input
-    call isfloat
-
     ;call maximum to find the maximum value in the array
+    lea rdi, [array]
+    mov rsi, r12
     call maximum
 
     ;call reverse to reverse the order of the elements in the array
+    lea rdi, [array]
+    mov rsi, r12
     call reverse
 
     ;call output_array to display the array
     lea rdi, [reverse_msg]
     xor rax, rax
     call printf
+    lea rdi, [array]
+    mov rsi, r12
     call output_array
 
     ;ask user if they want to process another data set
@@ -103,5 +110,6 @@ manager: ;this is a loop btw
     cmp al, 'Y'
     je manager ;repeat if user wants to do it again
 
+    mov rax, r12 ;returns sie to main.cpp
     pop rbp
     ret
