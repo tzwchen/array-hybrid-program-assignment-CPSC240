@@ -58,53 +58,28 @@ segment .bss
 
 segment .text
 
-;setting up the stack frame and saving the registers
-push rbp
-push rbx
-push r12
-push r13
-push r14
-push r15
+maximum:
+    push rbp
+    mov rbp, rsp
 
-;get the size of the array from the stack
-mov r12, [rsp + 48] ; size of the array is passed 
-mov [size], r12 ; store the size in the variable
+    ;rdi = array pointer, rsi=size
+    movsd xmm0, [rdi] ;Assume first element is max
+    mov rcx, 1        ;Counter starts at 1
 
-;initialize the maximum value to the first element of the array
-mov r13, [rsp + 40] ; pointer to the array
-mov rax, [r13] ; load the first element of the array into rax
-mov [max], rax ; store the first element as the initial maximum value
+max_loop:
+    cmp rcx, rsi
+    jge max_done
 
-;loop
-mov r14, 1 ;initialize loop index to 1
-.loop_start:
-    cmp r14, [size] ; compare loop index with the size of the array
-    jge .loop_end ; if loop index is greater than or equal to size, exit
-    mov rax, [r13 + r14*8] ;put the current element of the array into rax
+    movsd xmm1, [rdi + rcx*8]
+    ucomisd xmm1, xmm0 ;Compare current to max
+    jbe next_item
+    movsd xmm0, xmm1   ;Update max
 
-    ;using isfloat to check if the currene element is a valid fp number
-    mov rdi, rax
-    call isfloat
-    cmp rax, 0 
-    je .not_float ;not a valid float
+next_item:
+    inc rcx
+    jmp max_loop
 
-    ;if valid, compare
-    cmp rax, [max]
-    jle .loop_continue ; if less than or equal
-    mov [max], rax ; update maximum value if not
-
-    .not_float:
-    inc r14 ; increment loop index
-    jmp .loop_start 
-     
-.loop_end:
-;move the maximum value to rax for return
-mov rax, [max]
-
-pop r15
-pop r14
-pop r13
-pop r12
-pop rbx
-pop rbp
-ret
+max_done:
+    ;Max value is now in xmm0 for the caller
+    pop rbp
+    ret
