@@ -44,6 +44,7 @@
 
 ;Begin code
 
+extern output_array
 extern input_array
 extern isfloat
 extern maximum
@@ -88,6 +89,12 @@ manager: ;this is a loop btw
     ;call reverse to reverse the order of the elements in the array
     call reverse
 
+    ;call output_array to display the array
+    lea rdi, [reverse_msg]
+    xor rax, rax
+    call printf
+    call output_array
+
     ;ask user if they want to process another data set
     lea rdi, [again]
     xor rax, rax
@@ -98,4 +105,3 @@ manager: ;this is a loop btw
 
     pop rbp
     ret
-    
