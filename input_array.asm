@@ -45,11 +45,13 @@
 ;Begin code
 
 extern scanf
+extern getchar 
 global input_array
 
 ;declarations
 section .data
     format_input db "%lf", 0 
+    error db "Please re-enter the last number.", 0
 
 section .bss
     array resq 100 
@@ -74,11 +76,27 @@ read_loop:
     xor rax, rax            
     
     call scanf ;returns items read
-
-    ;when user no longer wants to input values, LOGIC: scanf will return 1 if valid input, but will return 0 if user hits Ctrl+D.
     cmp rax, 1
-    jne input_done
+    jne valid_input ;if valid continue
 
+    ;if invalid
+    cmp rax, -1 ;if scanf returns -1, that means theyre done
+    je input_done
+
+    ;if actually invalid
+    lea rdi, [error]
+    xor rax, rax
+    call printf ;prompts user to re-enter
+
+clear_buffer: ;need to do this to prevent infinite loops...refer back to circles assignment
+    call getchar
+    cmp rax, 10 ;check if newline
+    je read_loop ;if newline, go back to reading input
+    cmp rax, -1 ;check if hit end 
+    je input_done ;if end, exit
+    jmp clear_buffer ;otherwise, keep clearing buffer until everything gone
+
+valid_input:
     ;repeat loop til done
     inc rbx
     jmp read_loop 
