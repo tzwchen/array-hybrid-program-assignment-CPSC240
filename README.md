@@ -44,6 +44,5 @@ Do you have another data set to process (Y or N)?  N
 
 Main received 12.9000000, and will keep it for future use.
 Main will return 0 to the operating system.   Bye.
-============================================================
 
 Assignment implemented for CSPC240, Professor Holliday
